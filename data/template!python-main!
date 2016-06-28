@@ -1,118 +1,61 @@
-#!@PYTHON@
-#--------------------------------------------------------------------------
-# File and Version Information:
-#  $$Id$$
-#
-# Description:
-#  Script $class...
-#
-#------------------------------------------------------------------------
+#!/bin/env python
 
 """Brief one-line description of the script.
 
 Following paragraphs provide detailed description of the module, its
-contents and usage. This is a template module (or module template:)
-which will be used by LCLS programmers to create new Python scripts.
-This is the "executable module" as opposed to library module. Executable
-modules are mangled (@PYTHON@ above replaced with real path to 
-interpreter plus some extra options) and copied to arch/$SIT_ARCH/bin area.
-
-This software was developed for the LCLS project.  If you use all or 
-part of it, please give an appropriate acknowledgement.
-
-@version $$Id$$ 
-
-@author $author
+contents and usage. This is a template module (or module template)
+which is used by developers to create new Python scripts.
+This is the "executable module" as opposed to library module.
 """
-
-#------------------------------
-#  Module's version from CVS --
-#------------------------------
-__version__ = "$$Revision: 8 $$"
-# $$Source$$
 
 #--------------------------------
 #  Imports of standard modules --
 #--------------------------------
-import sys
+from argparse import ArgumentParser
+import logging
 import os
-
-#---------------------------------
-#  Imports of base class module --
-#---------------------------------
-from AppUtils.AppBase import AppBase
+import sys
 
 #-----------------------------
 # Imports for other modules --
 #-----------------------------
-#from PkgPackage.PkgModule import PkgClass
 
 #---------------------
 # Local definitions --
 #---------------------
 
-# local variable accessible in this module only
-_OP_X = 'Y'
+def _configLogger(verbosity):
+    """ configure logging based on verbosity level """
 
-# local method name starts with underscore
-def _localMethod() :
-	pass
+    levels = {0: logging.WARNING, 1: logging.INFO, 2: logging.DEBUG}
+    logfmt = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+
+    logging.basicConfig(level=levels.get(verbosity, logging.DEBUG), format=logfmt)
+
 
 #---------------------------------
 #  Application class definition --
 #---------------------------------
 
-class $class ( AppBase ) :
+def main():
 
-    def __init__ ( self ) :
+    descr = 'One-line application description.'
+    parser = ArgumentParser(description=descr)
+    parser.add_argument('-v', '--verbose', dest='verbose', action='count', default=0,
+                        help='More verbose output, can use several times.')
+    # add more command line options
+    args = parser.parse_args()
 
-        AppBase.__init__ ( self, installLogger = True, usage = "usage: %prog [options] input-file ..." )
-
-        # add application options, see optparse module for details
-        self._parser.add_option ('-u', "--user",  default=None, help="specify user name")
-        self._parser.add_option ('-o', "--output-file", action="store", default=None, 
-                                 help="send output to file" )
-        
-
-    #
-    #  Run the whole thing after parsing the command arguments and 
-    #  installing logger. See AppBase class for details.
-    #
-    def _run ( self ) :
-
-        # check the arguments
-        if not self._args :
-            self._parser.error("one or more arguments required")
-            return 2
-
-        # open output file
-        if self._options.output_file :
-            self.debug( "Open alternative output file" )
-            out = open ( self._options.output_file, "w" )
-        else:
-            out = sys.stdout
-
-        # process all arguments
-        for arg in self._args :
-            self.process ( arg, out )
-
+    # configure logging
+    _configLogger(args.verbose)
 
     #
-    #  Does real processing job
+    #  Application logic goes here
     #
-    def process ( self, arg, out ) :
-        """Processes one argument"""
-
-        self.trace( "Processing "+arg+"..." )
-
-        #.......................
-        pass
-	
 
 #
 #  run application when imported as a main module
 #
-if __name__ == "__main__" :
-    app = $class()
-    rc = app.run()
+if __name__ == "__main__":
+    rc = main()
     sys.exit(rc)
