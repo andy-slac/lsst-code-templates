@@ -119,7 +119,7 @@ def main(argv):
     dir = '.'
     datapath = os.getenv("CODEGEN_DIR")
     if datapath and os.path.isfile(os.path.join(datapath, "data", _kwgen)):
-        dir = os.path.join(d, "data")
+        dir = os.path.join(datapath, "data")
 
     parser = OptionParser(usage="%prog [options] [package] [class]", description=_descr)
     parser.add_option("-p", "--print", dest="list_classes", action="store_true", default=False,
