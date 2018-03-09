@@ -9,19 +9,19 @@ modules provide class definitions or function definitions, but these
 scripts cannot be run by themselves.
 """
 
+from __future__ import absolute_import, division, print_function
+
+__all__ = [...]
+
 #--------------------------------
 #  Imports of standard modules --
 #--------------------------------
 import sys
 
-#---------------------------------
-#  Imports of base class module --
-#---------------------------------
-$BASEINCL
-
 #-----------------------------
 # Imports for other modules --
 #-----------------------------
+$BASEINCL
 #import PkgPackage.PkgModule
 #from PkgPackage.PkgModule import PkgClass
 
@@ -54,10 +54,6 @@ def foo(x):
     if x not in (OP_ONE, OP_NONE):
         return None
     return (None,)
-
-#---------------------
-#  Class definition --
-#---------------------
 
 class $class$BASEDECL:
     """Brief description of a class.

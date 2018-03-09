@@ -9,6 +9,8 @@
 #
 #-------------------------------------------------------------------------------
 
+from __future__ import print_function
+
 #---------------------------
 #  Import standard modules
 #---------------------------
@@ -48,8 +50,8 @@ class _KWGen(object):
         self.ldict = {}
         try:
             execfile(fname, {}, self.ldict)
-        except Exception, e:
-            print >> sys.stderr, "Failed to import file %s: %s" % (fname, str(e))
+        except Exception as e:
+            print("Failed to import file %s: %s" % (fname, e), file=sys.stderr)
 
     @staticmethod
     def lang_trans(lang):
@@ -102,7 +104,7 @@ class _KWGen(object):
         fmt = "%%-%ds - %%s" % max([len(l) for l in langs])
         for l in langs:
             descr = self.ldict.get('codegen_%s_description' % _KWGen.lang_trans(l), "")
-            print fmt % (l, descr)
+            print(fmt % (l, descr))
 
     def get_dstdir(self, lang, ext):
 
@@ -138,7 +140,7 @@ def main(argv):
     (options, args) = parser.parse_args()
 
     if not os.path.isfile(os.path.join(options.directory, _kwgen)):
-        print >> sys.stderr, "Failed to find `%s' location, exiting" % _kwgen
+        print("Failed to find `%s' location, exiting" % _kwgen, file=sys.stderr)
         return 2
 
     # read kwgen file
@@ -189,7 +191,7 @@ def main(argv):
             # path name
             genName = os.path.join(dstdir, genName)
             if not options.force and os.path.exists(genName):
-                print >> sys.stderr, "File %s already exists, skipping code generation" % genName
+                print("File %s already exists, skipping code generation" % genName, file=sys.stderr)
                 continue
             try:
                 templ = open(os.path.join(options.directory, f)).read()
@@ -199,18 +201,18 @@ def main(argv):
                 code = templ.safe_substitute(kw)
                 open(genName, 'w').write(code)
                 generated.append(genName)
-            except Exception, e:
-                print >> sys.stderr, "Failure during code generation:", str(e)
+            except Exception as e:
+                print("Failure during code generation:", str(e), file=sys.stderr)
                 break
 
     if generated:
-        print "Produced files:", " ".join(generated)
+        print("Produced files:", " ".join(generated))
     else:
         if not templates:
             # means no matching template found
-            print >> sys.stderr, "Language name is not known: %s" % options.language
+            print("Language name is not known: %s" % options.language, file=sys.stderr)
         else:
-            print >> sys.stderr, "No files were generated, check output for errors"
+            print("No files were generated, check output for errors", file=sys.stderr)
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))

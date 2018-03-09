@@ -8,6 +8,10 @@ which is used by developers to create new Python scripts.
 This is the "executable module" as opposed to library module.
 """
 
+from __future__ import absolute_import, division, print_function
+
+__all__ = [...]
+
 #--------------------------------
 #  Imports of standard modules --
 #--------------------------------
@@ -33,9 +37,9 @@ def _configLogger(verbosity):
     logging.basicConfig(level=levels.get(verbosity, logging.DEBUG), format=logfmt)
 
 
-#---------------------------------
-#  Application class definition --
-#---------------------------------
+#----------------------------
+#  Main application method --
+#----------------------------
 
 def main():
 
