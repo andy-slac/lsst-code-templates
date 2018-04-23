@@ -49,7 +49,7 @@ class _KWGen(object):
         # try to read the 'codegen_kwgen.py' file, ignore all errors
         self.ldict = {}
         try:
-            execfile(fname, {}, self.ldict)
+            exec(compile(open(fname).read(), fname, 'exec'), {}, self.ldict)
         except Exception as e:
             print("Failed to import file %s: %s" % (fname, e), file=sys.stderr)
 
